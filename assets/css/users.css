@@ -1,0 +1,240 @@
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+  }
+
+ 
+  
+  body{
+    background: linear-gradient(45deg, #1a237e, #546e7a, #90a4ae);
+    background-size: 400% 400%;
+    position: relative;
+    animation: gradientAnimation 10s ease-in-out infinite;
+  }
+  
+  @keyframes gradientAnimation {
+    0% {
+      background-position: 0 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0 50%;
+    }
+  }
+  header {
+    position: sticky;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    background-image: linear-gradient(to right, #434343 0%, #000000 100%);
+  }
+  /*barra de navegacion*/
+  nav {
+    margin-top: 1rem;
+    display: flex;
+    width: 100%;
+    height: 6.5rem; 
+    justify-content:start;
+    align-items: center;
+    padding: 0 1.25rem;
+    background: #0f0c29;
+    background: -webkit-linear-gradient(to right, #24243e, #302b63, #0f0c29);
+    background: linear-gradient(to right, #24243e, #302b63, #0f0c29);
+    font-size: 1.2rem;
+    color: #00ffff;
+    box-shadow: 0.625rem 0.313rem 0.313rem #000000;
+  }
+  
+/*logo Codo-Net*/
+  .logo {
+  width: 20rem;
+    }
+  
+  
+.title{
+  color:aliceblue;
+  text-align:center ;
+  margin-top: 2rem;
+}
+ .container {
+  display: flex;
+  justify-content: center;
+}
+
+table {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  border-collapse: collapse;
+  width: 400px;
+  border:1px solid  #6332ad;
+   
+  }
+  
+  table th, 
+  table td {
+    padding: 8px;
+    text-align: center;
+    border: 1px solid #6332ad;
+  }
+
+ th {
+    color:#ffffffc9;
+    background-image: radial-gradient( circle farthest-corner at 50.3% 44.5%, 
+    rgba(116,147,179,1) 0%, rgba(62,83,104,1) 100.2% );
+    
+  }
+
+  tr{
+    color:#ffffffc9;
+    background-image: radial-gradient( circle farthest-corner at 50.3% 44.5%, 
+   rgba(116,147,179,1) 0%, rgba(62,83,104,1) 100.2% );
+    text-align: center;
+ 
+  }
+  
+  tr:hover {
+    color:#0004ffb3;
+  }
+
+  .btn{
+    text-align: center;
+  }
+  .list_btn{
+  background-color: #00a0df;
+	color: #fff;
+  font-size: 18px;
+	padding: 10px 20px;
+	border-radius: 5px;
+  }
+
+   form {
+    width:400px;
+    padding: 20px;
+    background-image: radial-gradient( circle farthest-corner at 50.3% 44.5%, 
+    rgba(116,147,179,1) 0%, rgba(62,83,104,1) 100.2% );
+    border-radius: 5px;
+    border: 1px solid #6332ad;
+    color:#ffffffc9
+  } 
+
+  form h2 {
+    text-align: center;
+  }
+
+  form label {
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  form input, form select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  form input[type="submit"], form button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+
+  form input[type="submit"]:hover, form button:hover {
+    background-color: #45a049;
+  }
+
+ 
+ul.list-group {
+  margin-top: 2rem;
+  margin-bottom: 3.5rem;
+  --bs-list-group-bg: transparent;
+ 
+}
+.vinculo {
+  text-decoration: none;
+  color: #ffffff;
+}
+.list-group{
+  margin-bottom:3rem;
+  
+}
+.list-group-item {
+  background-image: radial-gradient( circle farthest-corner at 50.3% 44.5%, 
+   rgba(116,147,179,1) 0%, rgba(62,83,104,1) 100.2% );
+}
+.vertical {
+  font-size: 1.2rem;
+}
+
+.modal-content {
+  margin: 10% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width:60%; 
+  max-width: 500px; 
+  border-radius: 5px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+
+}
+
+
+.modal-header.bg{
+  background-color:#909bae;
+}
+
+ .bottom{ 
+  background: #141E30;  
+  background: -webkit-linear-gradient(to right, #243B55, #141E30);
+  background: linear-gradient(to right, #243B55, #141E30); 
+  color:#ffffff;
+  
+  display: flex;
+  justify-content: center;
+  box-shadow: 0.625rem 0.313rem 0.313rem #000000; 
+  text-align: center;
+  }
+
+  /* Tamaño de pantalla pequeño */
+  @media (max-width: 576px) {
+    .list-group {
+      flex-direction: column;
+    }
+  }
+
+  /* Tamaño de pantalla mediano */
+  @media (min-width: 577px) and (max-width: 768px) {
+    .list-group {
+      flex-direction: row;
+    }
+    .list-group-item.vertical {
+      flex-direction: column;
+    }
+  }
+
+  /* Estilos generales del footer */
+
+
+
+
+/* Media query para dispositivos medianos */
+@media (max-width: 991px) {
+  footer {
+    display: grid;
+    
+  }
+}
+
+/* Media query para dispositivos pequeños */
+@media (max-width: 767px) {
+  footer {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+}
