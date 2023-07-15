@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel</title>
+  <link rel="stylesheet" href="./assets/css/users.css">
+  <!-- CSS only -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+  <script src="https://kit.fontawesome.com/45d21db9a0.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <header id="header">
+    <nav>
+        <a href=""><img src="./assets/img/xXWDpM4Z5GVi_400_200.png" class="logo" width=""alt="logoEmpresa" />
+        </a><i class="fa-solid fa-user-check fa-xl"></i>
+    </nav>
+</header>
+
+  <div id="app">
+    <h1 class="title align text-center"><i>PRODUCTOS</i></h1>
+<!-- List group-->
+<section>
+    <div class="container-fluid text-center">
+      <div class="row justify-content-center">
+      <div class="col-sm-4">
+      <ul class="list-group bg">
+            <li class="list-group-item vertical" aria-current="true"><i class="fa-solid fa-gear"></i>CODO-NET</li>
+            <li class="list-group-item vertical"><a href="#" data-bs-toggle="modal" data-bs-target="#listModal"class="vinculo"><i class="fa-solid fa-list-ol"></i>&nbsp;LISTA PRODUCTOS</a></li>
+            <li class="list-group-item vertical"><a href="#" data-bs-toggle="modal" data-bs-target="#readModal"class="vinculo"><i class="fa-solid fa-eye"></i>&nbsp;VER PRODUCTO</a></li>
+            <li class="list-group-item vertical "><a href="#" data-bs-toggle="modal" data-bs-target="#createModal"class="vinculo"><i class="fa-solid fa-circle-plus"></i>&nbsp;AGREGAR PRODUCTO</a></li>
+            <li class="list-group-item vertical "><a href="#" data-bs-toggle="modal" data-bs-target="#updateModal"class="vinculo"><i class="fa-solid fa-pen"></i>&nbsp;MODIFICAR PRODUCTO</a></li>
+            <li class="list-group-item vertical "><a href="#" data-bs-toggle="modal" data-bs-target="#deleteModal"class="vinculo"><i class="fa-solid fa-eraser"></i>&nbsp;ELIMINAR PRODUCTO</a></li>
+          </ul>
+      </div>
+      </div>
+      </div>
+    </section>
+        
+      <div class="modal fade" id="listModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+          <div class="modal-content">
+            <div class="modal-header bg">
+              <h5 class="modal-title" id="exampleModalLabel">Lista de productos</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="container">
+                <table>
+                  <thead id="head">
+                    <tr>
+                      <th>Código</th>
+                      <th>Servicio</th>
+                      <th>Plan</th>
+                      <th>Precio</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="producto in productos" :key="producto.codigo">
+                      <td>{{producto.codigo}}</td>
+                      <td>{{producto.servicio}}</td>
+                      <td>{{producto.plan}}</td>
+                      <td>{{producto.precio}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="modal-footer">
+            
+            </div>
+          </div>
+        </div>
+      </div>
+      
+     <div class="modal fade" id="readModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+          <div class="modal-content">
+            <div class="modal-header bg">
+              <h5 class="modal-title" id="exampleModalLabel">Ver Producto</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="container">
+                <form @submit.prevent="consultarProducto">
+                  <label for="consultaCodigo">Código:</label>
+                  <input type="number" id="consultaCodigo" v-model="consultaCodigo" required>
+                  <button class="list_btn" type="submit">Consultar</button>
+                  <div v-if="consultaResultado">{{ consultaResultado }}</div>
+                </form>
+              </div>
+            </div>
+            <div class="modal-footer">
+              
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+          <div class="modal-content">
+            <div class="modal-header bg">
+              <h5 class="modal-title" id="exampleModalLabel">Agregar Producto</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="container">
+                <form @submit.prevent="agregarProducto" class="row g-3 needs-validation" novalidate>
+                  <label for="agregarCodigo" class="form-label">Código:<span
+                    class="asterisk">&nbsp;*</span>&nbsp;</label>
+                  <input type="number" id="agregarCodigo" class="form-control" v-model="agregarCodigo" required><br>
+                  <label for="agregarServicio" class="form-label">Servicio<span
+                    class="asterisk">&nbsp;*</span>&nbsp;:</label>
+                  <div class="input-group">
+                  <select id="agregarServicio" class="form-select" v-model="agregarServicio" required><br>
+                    <option value="">Seleccionar</option>
+                    <option value="Telefonia Movil">Telefonia Movil</option>
+                    <option value="Internet">Internet</option>
+                    <option value="TV & Streaming">TV & Streaming</option>
+                  </select>
+                  </div>
+                 
+                  <label for="agregarPlan" class="form-label">Plan<span
+                    class="asterisk">&nbsp;*</span>&nbsp;:</label>
+                  <div class="input-group">
+                  <select class="form-select" id="agregarPlan" v-model="agregarPlan" required>
+                    <option value="">Seleccionar</option>
+                    <option value="Linea Control 1">Linea Control 1</option>
+                    <option value="Linea Control 2">Linea Control 2</option>
+                    <option value="Linea Control 3">Linea Control 3</option>
+                    <option value="Internet WiFi 300MB">Internet WiFi 300MB</option>
+                    <option value="Internet WiFi 500MB">Internet WiFi 500MB</option>
+                    <option value="Internet WiFi 1000MB">Internet WiFi 1000MB</option>
+                    <option value="TV Basico">TV Basico</option>
+                    <option value="TV Clasico">TV Clasico</option>
+                    <option value="TV Premium">TV Premium</option>
+                  </select><br>
+                  </div>
+
+                  <label for="agregarPrecio" class="form-label">Precio<span
+                    class="asterisk">&nbsp;*</span>&nbsp;:</label>
+                  <input type="number" step="0.01" id="agregarPrecio" class="form-control" v-model="agregarPrecio" required>
+                  <button class="list_btn" type="submit">Activar</button>
+                  <p>Los campos con asteriscos(<span class="asterisk">*</span>) son obligatorios</p>
+
+                  <div v-if="altaResultado">{{ altaResultado }}</div>
+                </form>
+              </div>
+            </div>
+            <div class="modal-footer">
+              
+            </div>
+          </div>
+        </div>
+      </div>
+      
+       <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+          <div class="modal-content">
+            <div class="modal-header bg">
+              <h5 class="modal-title" id="exampleModalLabel">Modificar Producto</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="container">
+                <form @submit.prevent="modificarProducto" novalidate>
+                  <label for="modificarCodigo">Código:</label>
+                  <input type="number" id="modificarCodigo"  v-model="modificarCodigo" required><br>
+                  <label for="modificarNuevoServicio">Servicio:</label>
+                  <select id="modificarNuevoServicio" v-model="modificarNuevoServicio" required><br>
+                    <option value="">Seleccionar</option>
+                    <option value="Telefonia movil">Telefonia movil</option>
+                    <option value="Internet">Internet</option>
+                    <option value="TV & Streaming">TV & Streaming</option>
+                  </select>
+                  <label for="modificarNuevoPlan">Plan:</label>
+                  <select id="modificarNuevoPlan" v-model="modificarNuevoPlan" required>
+                    <option value="">Seleccionar</option>
+                    <option value="Linea Control 1">Linea Control 1</option>
+                    <option value="Linea Control 2">Linea Control 2</option>
+                    <option value="Linea Control 3">Linea Control 3</option>
+                    <option value="Internet WiFi 300MB">Internet WiFi 300MB</option>
+                    <option value="Internet WiFi 500MB">Internet WiFi 500MB</option>
+                    <option value="Internet WiFi 1000MB">Internet WiFi 1000MB</option>
+                    <option value="TV Basico">TV Basico</option>
+                    <option value="TV Clasico">TV Clasico</option>
+                    <option value="TV Premium">TV Premium</option>
+                  </select><br>
+                  <label for="modificarNuevoPrecio"> Precio:</label>
+                  <input type="number" step="0.01" id="modificarNuevoPrecio" v-model="modificarNuevoPrecio" required>
+                  <button class="list_btn" type="submit">Modificar</button>
+                  <div v-if="modificarResultado">{{ modificarResultado }}</div>
+                </form>
+              </div>
+            </div>
+            <div class="modal-footer">
+              
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header bg">
+        <h5 class="modal-title" id="exampleModalLabel">Eliminar Producto</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="container">
+          <table>
+            <thead>
+              <tr>
+                <th>Código</th>
+                <th>Servicio</th>
+                <th>Plan</th>
+                <th>Precio</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="producto in productos" :key="producto.codigo">
+                <td>{{ producto.codigo }}</td>
+                <td>{{ producto.servicio }}</td>
+                <td>{{ producto.plan }}</td>
+                <td>{{ producto.precio }}</td>
+                <td><button type="button" @click="eliminarProducto(producto.codigo)"><i class="fa-solid fa-trash fa-xl"></i></button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+  
+ <div id="my-app">
+  <h1 class="title align text-center"><i>CLIENTES</i></h1>
+<!-- List group-->
+<section>
+    <div class="container-fluid text-center">
+      <div class="row justify-content-center">
+      <div class="col-sm-4">
+      <ul class="list-group bg">
+            <li class="list-group-item vertical" aria-current="true"><i class="fa-solid fa-gear"></i>CODO-NET</li>
+            <li class="list-group-item vertical"><a href="#" data-bs-toggle="modal" data-bs-target="#listaModal"class="vinculo"><i class="fa-solid fa-list-ol"></i>&nbsp;CLIENTES</a></li>
+            <li class="list-group-item vertical"><a href="#" data-bs-toggle="modal" data-bs-target="#verModal"class="vinculo"><i class="fa-solid fa-eye"></i>&nbsp;VER CLIENTE</a></li>
+            <li class="list-group-item vertical "><a href="#" data-bs-toggle="modal" data-bs-target="#altaModal"class="vinculo"><i class="fa-solid fa-face-smile"></i>&nbsp;ALTA CLIENTE</a></li>
+            <li class="list-group-item vertical "><a href="#" data-bs-toggle="modal" data-bs-target="#editarModal"class="vinculo"><i class="fa-solid fa-pen"></i>&nbsp;MODIFICAR DATOS</a></li>
+            <li class="list-group-item vertical "><a href="#" data-bs-toggle="modal" data-bs-target="#eliminarModal"class="vinculo"><i class="fa-solid fa-face-sad-tear"></i>&nbsp;BAJA CLIENTE</a></li>
+          </ul>
+      </div>
+      </div>
+      </div>
+    </section>
+        
+     <div class="modal fade" id="listaModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+          <div class="modal-content">
+            <div class="modal-header bg">
+              <h5 class="modal-title" id="exampleModalLabel">Lista de Clientes</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="container">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Código</th>
+                      <th>Nombre</th>
+                      <th>Apellido</th>
+                      <th>Telefono</th>
+                      <th>Email</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="cliente in clientes" :key="cliente.codigo">
+                      <td>{{cliente.codigo}}</td>
+                      <td>{{cliente.nombre}}</td>
+                      <td>{{cliente.apellido}}</td>
+                      <td>{{cliente.telefono}}</td>
+                      <td>{{cliente.email}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="modal-footer">
+              
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="modal fade" id="verModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+          <div class="modal-content">
+            <div class="modal-header bg">
+              <h5 class="modal-title" id="exampleModalLabel">Ver Cliente</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="container">
+                <form @submit.prevent="consultarCliente">
+                  <label for="consultaCodigo">Código:</label>
+                  <input type="number" id="consultaCodigo" v-model="consultaCodigo" required>
+                  <button class="list_btn" type="submit">Consultar</button>
+                  <div v-if="consultaResultado">{{ consultaResultado }}</div>
+                </form>
+              </div>
+            </div>
+            <div class="modal-footer">
+              
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="modal fade" id="altaModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+          <div class="modal-content">
+            <div class="modal-header bg">
+              <h5 class="modal-title" id="exampleModalLabel">Alta Cliente</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="container">
+                <form id="form" @submit.prevent="agregarCliente" class="row g-3 needs-validation" novalidate>
+                  <label for="agregarCodigo" class="form-label">Código<span
+                    class="asterisk">&nbsp;*</span>&nbsp;:</label>
+                  <input type="number" id="code" class="form-control" v-model="agregarCodigo" required><br>
+                  <label for="agregarNombre" class="form-label">Nombre<span
+                    class="asterisk">&nbsp;*</span>&nbsp;:</label>
+                  <input type="text" id="name" class="form-control" v-model="agregarNombre" required><br>
+                  <label for="agregarApellido" class="form-label">Apellido<span
+                    class="asterisk">&nbsp;*</span>&nbsp;:</label>
+                  <input type="text" id="lastName" class="form-control" v-model="agregarApellido" required>
+                  <label for="agregarTelefono" class="form-label">Telefono<span
+                    class="asterisk">&nbsp;*</span>&nbsp;:</label>
+                  <input type="number" id="phone" class="form-control" v-model="agregarTelefono" required>
+                  <label for="agregarEmail" class="form-label">Email<span
+                    class="asterisk">&nbsp;*</span>&nbsp;:</label>
+                  <input type="email" id="email" class="form-control" v-model="agregarEmail" required>
+                  <button class="list_btn" type="submit">Activar</button>
+                  <p>Los campos con asteriscos(<span class="asterisk">*</span>) son obligatorios</p>
+                  <div v-if="altaResultado">{{ altaResultado }}</div>
+                </form>
+              </div>
+            </div>
+            <div class="modal-footer">
+            </div>
+          </div>
+        </div>
+      </div>
+      
+
+      <div class="modal fade" id="editarModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+          <div class="modal-content">
+            <div class="modal-header bg">
+              <h5 class="modal-title" id="exampleModalLabel">Editar Cliente</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="container">
+                <form @submit.prevent="modificarCliente">
+                  <label for="modificarCodigo">Código:</label>
+                  <input type="number" id="modificarCodigo" v-model="modificarCodigo" required><br>
+                  <label for="modificarNuevoNombre">Nombre:</label>
+                  <input id="modificarNuevoNombre" v-model="modificarNuevoNombre" required><br>
+                  <label for="modificarNuevoApellido">Apellido:</label>
+                  <input id="modificarNuevoApellido" v-model="modificarNuevoApellido" required>
+                  <label for="modificarNuevoTelefono">Telefono:</label>
+                  <input id="modificarNuevoTelefono" v-model="modificarNuevoTelefono" required>
+                  <label for="modificarEmail">Email:</label>
+                  <input  id="modificarNuevoEmail" v-model="modificarNuevoEmail" required>
+                  <button class="list_btn" type="submit">Modificar</button>
+                  <div v-if="modificarResultado">{{ modificarResultado }}</div>
+                </form>
+              </div>
+            </div>
+            <div class="modal-footer">
+             
+            </div>
+          </div>
+        </div>
+      </div>
+      
+
+<div class="modal fade" id="eliminarModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header bg">
+        <h5 class="modal-title" id="exampleModalLabel">Eliminar Cliente</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="container">
+          <table>
+            <thead>
+              <tr>
+                <th>Codigo</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Telefono</th>
+                <th>Email</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="cliente in clientes" :key="cliente.codigo">
+                <td>{{cliente.codigo}}</td>
+                <td>{{cliente.nombre }}</td>
+                <td>{{cliente.apellido }}</td>
+                <td>{{cliente.telefono }}</td>
+                <td>{{cliente.email }}</td>
+                <td><button type="button" @click="eliminarCliente(cliente.codigo)"><i class="fa-solid fa-trash fa-xl"></i></button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<div class="bottom">
+    <footer>
+        <h3>® Todos los derechos reservados</h3>
+        <p>Codo-Net 2023</p>
+    </footer>
+
+<script src="https://unpkg.com/vue@next"></script>
+<script src="js/tp_final.js"></script> 
+<script src="js/customers.js"></script>
+
+<!-- JavaScript Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js" integrity="sha384-fbbOQedDUMZZ5KreZpsbe1LCZPVmfTnH7ois6mU1QK+m14rQ1l2bGBq41eYeM/fS" crossorigin="anonymous"></script>
+<script src="js/validation_prod.js"></script> 
+</body>
+</html>

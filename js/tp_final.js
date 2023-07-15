@@ -1,4 +1,5 @@
-const URL = "http://127.0.0.1:5000";
+//const URL = "http://127.0.0.1:5000";
+const URL = "https://juliganSW.pythonanywhere.com"
 const app = Vue.createApp({
   data() {
     return {
@@ -34,6 +35,11 @@ const app = Vue.createApp({
         });
     },
     agregarProducto() {
+    //Validar que ningún campo quede vacío
+    if (!this.agregarCodigo || !this.agregarServicio || !this.agregarPlan || !this.agregarPrecio) {
+    alert('Por favor, complete todos los campos');
+    return;
+  }
       fetch(`${URL}/productos`, {
         method: 'POST',
         headers: {
@@ -111,7 +117,6 @@ const app = Vue.createApp({
         });
     },
     eliminarProducto(codigo) {
-      
       // Eliminamos el producto de la fila seleccionada
       fetch(URL + `/productos/${codigo}`, { method: 'DELETE' })
           .then(response => {

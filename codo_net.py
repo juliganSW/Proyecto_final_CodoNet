@@ -34,12 +34,12 @@ def create_table():
 def create_table():
     conector=conectar()
     cursor=conector.cursor()
-    cursor.execute('''CREATE TABLE IF NOT EXISTS clientes(
+    cursor.execute('''CREATE TABLE IF NOT EXISTS customers(
             codigo INTEGER PRIMARY KEY AUTOINCREMENT,
             nombre VARCHAR(150),
             apellido VARCHAR(150),
-            tipo_usuario VARCHAR(150),
-            localidad VARCHAR(150)
+            telefono INT,
+            email VARCHAR(150)
                        )''')
     conector.commit()
     cursor.close()
@@ -149,7 +149,122 @@ def eliminar_producto(codigo):
         return jsonify({'message': 'Producto no encontrado.'}), 404
     except Exception as e:
         return jsonify({'error': 'Error al eliminar el producto', 'detalle': str(e)}), 500
+#################################################################################################
+#Clientes#
+#################################################################################################
+@app.route('/clientes', methods=['POST'])
+def agregar_cliente():
+    data = request.get_json()
+    if "codigo" not in data or "nombre" not in data or "apellido" not in data or "telefono" not in data or "email" not in data:
+        return  jsonify({'error': 'Falta uno o más campos requeridos'}), 400
+    try:
+        conector = conectar()
+        cursor = conector.cursor()
+        cursor.execute("INSERT INTO customers (codigo, nombre, apellido, telefono, email) VALUES (?, ?, ?, ?, ?)", 
+                       (data['codigo'], data['nombre'], data['apellido'], data['telefono'], data['email']))
+        conector.commit()
+        cursor.close()
+        conector.close()
+        
+        return jsonify({'mensaje': 'cliente agregado correctamente'}), 201
+    except:
+        return jsonify({'error': 'Error al agregar el cliente'}), 500
+        
+@app.route('/clientes/<int:codigo>', methods=['GET'])          
+def consultar_cliente(codigo):
+    try:
+        conector = conectar()
+        cursor = conector.cursor()
+        cursor.execute("SELECT * FROM customers WHERE codigo=?",(codigo,))
+        cliente=cursor.fetchone()
+        if cliente is None:
+            return jsonify({'error': 'No se encontró el cliente'}), 404
+        else:
+            return jsonify({
+                    'codigo':cliente['codigo'],
+                    'nombre': cliente['nombre'],
+                    'apellido': cliente['apellido'],
+                    'telefono': cliente['telefono'],
+                    'email': cliente['email']
+        })
+    except:        
+        return jsonify({'error': 'Error al consultar el cliente'}), 500
     
+@app.route('/clientes/<int:codigo>', methods=['PUT'])
+def modificar_cliente(codigo):
+    data = request.get_json()
+    print(data)
+    
+    if 'nombre' not in data or 'apellido' not in data or 'telefono' not in data or 'email' not in data:
+        return jsonify({'error': 'Falta uno o más campos requeridos'}), 400
+
+    try:
+        conector = conectar()
+        cursor = conector.cursor()
+        cursor.execute("SELECT * FROM customers WHERE codigo=?", (codigo,))
+        cliente = cursor.fetchone()
+        
+        if cliente is None:
+            return jsonify({'error': 'cliente no encontrado'}), 404
+        
+        cursor.execute('''UPDATE customers SET nombre=?, apellido=?, telefono=?, email=?
+                  WHERE codigo=?''', (data['nombre'], data['apellido'], data['telefono'], data['email'], codigo))
+
+        
+        conector.commit()
+        cursor.close()
+        conector.close()
+        
+        return jsonify({'mensaje': 'Cliente editado con éxito'}), 200
+    
+    except Exception as e:
+        return jsonify({'error': 'Error al editar cliente', 'detalle': str(e)}), 500
+    
+@app.route('/clientes', methods=['GET']) 
+def listar_clientes():
+    try:
+        conector=conectar()
+        cursor= conector.cursor()
+        cursor.execute("SELECT * FROM customers") 
+        clientes = cursor.fetchall()  
+        response=[]
+        for cliente in clientes:
+            response.append({
+                'codigo': cliente ['codigo'],
+                'nombre': cliente ['nombre'],
+                'apellido':cliente ['apellido'],
+                'telefono': cliente ['telefono'],
+                'email': cliente['email']
+            })
+            
+        return jsonify(response), 200
+    except:
+        return jsonify({'error': 'Error al listar los clientes'}), 500
+    
+@app.route('/clientes/<int:codigo>', methods=['DELETE'])
+def eliminar_cliente(codigo): 
+    try:
+        conector=conectar()
+        cursor=conector.cursor()
+        cursor.execute('''DELETE FROM customers WHERE codigo=?
+                       ''',(codigo,))
+        if cursor.rowcount > 0:
+            conector.commit()
+            return jsonify({'message': 'Cliente eliminado con exito '}), 200
+        return jsonify({'message': 'Cliente no encontrado'}), 404
+    except Exception as e:
+        return jsonify({'error': 'Error al eliminar el cliente', 'detalle': str(e)}), 500
+               
+                        
+    
+    
+
+
+
+if __name__ == '__main__':
+    create_table()
+    app.run()
+
 
 
         
